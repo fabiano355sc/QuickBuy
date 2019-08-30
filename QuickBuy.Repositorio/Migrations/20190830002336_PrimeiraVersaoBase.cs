@@ -23,21 +23,7 @@ namespace QuickBuy.Repositorio.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ItemPedido",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    ProdutoId = table.Column<int>(nullable: false),
-                    Quantidade = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ItemPedido", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Produto",
+                name: "Produtos",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -48,11 +34,27 @@ namespace QuickBuy.Repositorio.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Produto", x => x.Id);
+                    table.PrimaryKey("PK_Produtos", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Pedido",
+                name: "Usuarios",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Email = table.Column<string>(maxLength: 50, nullable: false),
+                    Senha = table.Column<string>(maxLength: 400, nullable: false),
+                    Nome = table.Column<string>(maxLength: 50, nullable: false),
+                    SobreNome = table.Column<string>(maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Usuarios", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Pedidos",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -69,86 +71,89 @@ namespace QuickBuy.Repositorio.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Pedido", x => x.Id);
+                    table.PrimaryKey("PK_Pedidos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Pedido_FormaPagamento_FormaPagamentoId",
+                        name: "FK_Pedidos_FormaPagamento_FormaPagamentoId",
                         column: x => x.FormaPagamentoId,
                         principalTable: "FormaPagamento",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Pedidos_Usuarios_UsuarioId",
+                        column: x => x.UsuarioId,
+                        principalTable: "Usuarios",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Usuario",
+                name: "ItensPedidos",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Email = table.Column<string>(maxLength: 50, nullable: false),
-                    Senha = table.Column<string>(maxLength: 400, nullable: false),
-                    Nome = table.Column<string>(maxLength: 50, nullable: false),
-                    SobreNome = table.Column<string>(maxLength: 50, nullable: false),
+                    ProdutoId = table.Column<int>(nullable: false),
+                    Quantidade = table.Column<int>(nullable: false),
                     PedidoId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Usuario", x => x.Id);
+                    table.PrimaryKey("PK_ItensPedidos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Usuario_Pedido_PedidoId",
+                        name: "FK_ItensPedidos_Pedidos_PedidoId",
                         column: x => x.PedidoId,
-                        principalTable: "Pedido",
+                        principalTable: "Pedidos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.InsertData(
+                table: "FormaPagamento",
+                columns: new[] { "Id", "Descricao", "Nome" },
+                values: new object[] { 1, "Boleto Bancário", "Boleto" });
+
+            migrationBuilder.InsertData(
+                table: "FormaPagamento",
+                columns: new[] { "Id", "Descricao", "Nome" },
+                values: new object[] { 2, "Cartão de Crédito", "Cartão de Crédito" });
+
+            migrationBuilder.InsertData(
+                table: "FormaPagamento",
+                columns: new[] { "Id", "Descricao", "Nome" },
+                values: new object[] { 3, "Depósito", "Depósito" });
+
             migrationBuilder.CreateIndex(
-                name: "IX_Pedido_FormaPagamentoId",
-                table: "Pedido",
+                name: "IX_ItensPedidos_PedidoId",
+                table: "ItensPedidos",
+                column: "PedidoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Pedidos_FormaPagamentoId",
+                table: "Pedidos",
                 column: "FormaPagamentoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Pedido_UsuarioId",
-                table: "Pedido",
+                name: "IX_Pedidos_UsuarioId",
+                table: "Pedidos",
                 column: "UsuarioId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Usuario_PedidoId",
-                table: "Usuario",
-                column: "PedidoId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Pedido_Usuario_UsuarioId",
-                table: "Pedido",
-                column: "UsuarioId",
-                principalTable: "Usuario",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Pedido_FormaPagamento_FormaPagamentoId",
-                table: "Pedido");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Pedido_Usuario_UsuarioId",
-                table: "Pedido");
+            migrationBuilder.DropTable(
+                name: "ItensPedidos");
 
             migrationBuilder.DropTable(
-                name: "ItemPedido");
+                name: "Produtos");
 
             migrationBuilder.DropTable(
-                name: "Produto");
+                name: "Pedidos");
 
             migrationBuilder.DropTable(
                 name: "FormaPagamento");
 
             migrationBuilder.DropTable(
-                name: "Usuario");
-
-            migrationBuilder.DropTable(
-                name: "Pedido");
+                name: "Usuarios");
         }
     }
 }

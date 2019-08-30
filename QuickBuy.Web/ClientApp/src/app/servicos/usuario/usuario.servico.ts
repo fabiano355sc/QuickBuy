@@ -23,12 +23,16 @@ export class UsuarioServico {
   }  
 
   public usuario_autenticado(): boolean {
-    return this._usuario != null;
+    return this._usuario != null && this._usuario.email != "" && this._usuario.senha != "";
   }
 
   public limpar_sessao() {
     sessionStorage.setItem("usuario-autenticado", "");
     this._usuario = null;
+  }
+
+  get headers(): HttpHeaders {
+    return new HttpHeaders().set('content-type', 'application/json');
   }
   
   constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
@@ -45,6 +49,11 @@ export class UsuarioServico {
     }
 
     return this.http.post<Usuario>(this.baseURL + "api/usuario/verificarUsuario", body, { headers });
+  }
+
+  public cadastrarUsuario(usuario: Usuario): Observable<Usuario> {
+        
+    return this.http.post<Usuario>(this.baseURL + "api/usuario", JSON.stringify(usuario), { headers: this.headers });
   }
 
 }

@@ -32,7 +32,7 @@ namespace QuickBuy.Repositorio.Migrations
 
                     b.HasIndex("PedidoId");
 
-                    b.ToTable("ItemPedido");
+                    b.ToTable("ItensPedidos");
                 });
 
             modelBuilder.Entity("QuickBuy.Dominio.Entidades.Pedido", b =>
@@ -73,7 +73,7 @@ namespace QuickBuy.Repositorio.Migrations
 
                     b.HasIndex("UsuarioId");
 
-                    b.ToTable("Pedido");
+                    b.ToTable("Pedidos");
                 });
 
             modelBuilder.Entity("QuickBuy.Dominio.Entidades.Produto", b =>
@@ -93,7 +93,7 @@ namespace QuickBuy.Repositorio.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Produto");
+                    b.ToTable("Produtos");
                 });
 
             modelBuilder.Entity("QuickBuy.Dominio.Entidades.Usuario", b =>
@@ -119,7 +119,7 @@ namespace QuickBuy.Repositorio.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Usuario");
+                    b.ToTable("Usuarios");
                 });
 
             modelBuilder.Entity("QuickBuy.Dominio.ObjetoDeValor.FormaPagamento", b =>

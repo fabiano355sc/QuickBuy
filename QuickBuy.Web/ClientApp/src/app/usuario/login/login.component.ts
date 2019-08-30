@@ -18,7 +18,6 @@ export class LoginComponent implements OnInit {
 
   constructor(private router: Router, private activatedRouter: ActivatedRoute,
     private usuarioServico: UsuarioServico) {
-
   }
 
   ngOnInit(): void {
@@ -39,7 +38,7 @@ export class LoginComponent implements OnInit {
           } else {
             this.router.navigate([this.returnUrl]);
           }
-
+          console.log("Logado com sucesso!");
         },
         err => {
           console.log(err.error);

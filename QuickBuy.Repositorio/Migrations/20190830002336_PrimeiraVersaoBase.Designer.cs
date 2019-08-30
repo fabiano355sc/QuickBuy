@@ -9,8 +9,8 @@ using QuickBuy.Repositorio.Contexto;
 namespace QuickBuy.Repositorio.Migrations
 {
     [DbContext(typeof(QuickBuyContexto))]
-    [Migration("20190826225351_DB_20190826_02")]
-    partial class DB_20190826_02
+    [Migration("20190830002336_PrimeiraVersaoBase")]
+    partial class PrimeiraVersaoBase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -34,7 +34,7 @@ namespace QuickBuy.Repositorio.Migrations
 
                     b.HasIndex("PedidoId");
 
-                    b.ToTable("ItemPedido");
+                    b.ToTable("ItensPedidos");
                 });
 
             modelBuilder.Entity("QuickBuy.Dominio.Entidades.Pedido", b =>
@@ -75,7 +75,7 @@ namespace QuickBuy.Repositorio.Migrations
 
                     b.HasIndex("UsuarioId");
 
-                    b.ToTable("Pedido");
+                    b.ToTable("Pedidos");
                 });
 
             modelBuilder.Entity("QuickBuy.Dominio.Entidades.Produto", b =>
@@ -95,7 +95,7 @@ namespace QuickBuy.Repositorio.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Produto");
+                    b.ToTable("Produtos");
                 });
 
             modelBuilder.Entity("QuickBuy.Dominio.Entidades.Usuario", b =>
@@ -121,7 +121,7 @@ namespace QuickBuy.Repositorio.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Usuario");
+                    b.ToTable("Usuarios");
                 });
 
             modelBuilder.Entity("QuickBuy.Dominio.ObjetoDeValor.FormaPagamento", b =>
